@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
  
 use Illuminate\Http\Request;
- 
+use App\Models\Product;
 class HomeController extends Controller
 {
     public function __construct()
@@ -13,7 +13,8 @@ class HomeController extends Controller
  
     public function index()
     {
-        return view('home');
+        $products = Product::orderBy('id', 'DESC')->take(5)->get();
+        return view('home', compact('products'));
     }
  
     public function adminHome()
