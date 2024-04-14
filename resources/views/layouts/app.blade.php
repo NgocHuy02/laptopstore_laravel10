@@ -76,57 +76,37 @@
         </div>
     </header>
  
-    <div class="flex flex-row">
-        <div class="flex flex-col w-64 h-screen overflow-y-auto bg-gray-900 border-r rtl:border-r-0 rtl:border-l dark:bg-gray-900 dark:border-gray-700">
-            <div class="sidebar text-center bg-gray-900">
-                <div class="text-gray-100 text-xl">
-                    <div class="p-2.5 mt-1 flex items-center">
-                        <i class="bi bi-app-indicator px-2 py-1 rounded-md bg-blue-600"></i>
-                        <h1 class="font-bold text-gray-200 text-[15px] ml-3">Adm    in</h1>
-                    </div>
-                    <div class="my-2 bg-gray-600 h-[1px]"></div>
-                </div>
-                <div class="p-2.5 flex items-center rounded-md px-4 duration-300 cursor-pointer bg-gray-700 text-white">
-                    <i class="bi bi-search text-sm"></i>
-                    <input type="text" placeholder="Search" class="text-[15px] ml-4 w-full bg-transparent focus:outline-none" />
-                </div>
-                <a href="{{ route('admin/home') }}">
-                    <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
-                        <i class="bi bi-house-door-fill"></i>
-                        <span class="text-[15px] ml-4 text-gray-200 font-bold">Home</span>
-                    </div>
-                </a>
-                <a href="{{ route('admin/brands') }}">
-                    <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
-                        <i class="bi bi-bookmark-fill"></i>
-                        <span class="text-[15px] ml-4 text-gray-200 font-bold">Brand</span>
-                    </div>
-                </a>
-                <a href="{{ route('admin/products') }}">
-                    <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
-                        <i class="bi bi-bookmark-fill"></i>
-                        <span class="text-[15px] ml-4 text-gray-200 font-bold">Products</span>
-                    </div>
-                </a>
-                <a href="{{ route('admin/profile') }}">
-                    <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
-                        <i class="bi bi-bookmark-fill"></i>
-                        <span class="text-[15px] ml-4 text-gray-200 font-bold">Profile</span>
-                    </div>
-                </a>
-                <a href="{{ route('logout') }}">
-                    <div class="my-4 bg-gray-600 h-[1px]"></div>
-                    <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
-                        <i class="bi bi-box-arrow-in-right"></i>
-                        <span class="text-[15px] ml-4 text-gray-200 font-bold">Logout</span>
-                    </div>
-                </a>
+<div class="flex flex-row">
+    <div class="flex flex-col w-64 h-screen overflow-y-auto bg-gray-800">
+        <div class="sidebar text-center py-4">
+            <div class="mb-5">
+                <i class="bi bi-app-indicator text-3xl text-blue-500"></i>
+                <h1 class="text-xl text-white font-bold mt-2">Admin</h1>
             </div>
-        </div>
-        <div class="flex flex-col w-full h-screen px-4 py-8 mt-10">
-            <div>@yield('contents')</div>
+            <nav class="mt-4 text-gray-300 space-y-4">
+                <a href="{{ route('admin/home') }}" class="block py-3 px-5 bg-gray-700 text-white hover:bg-blue-600 transition-colors shadow-lg no-underline w-full {{ request()->is('admin/home') ? 'bg-blue-500' : '' }}">
+                    <i class="bi bi-house-door-fill"></i>
+                    <span class="ml-4 font-medium text-lg">Home</span>
+                </a>
+                <a href="{{ route('admin/brands') }}" class="block py-3 px-5 bg-gray-700 text-white hover:bg-blue-600 transition-colors shadow-lg no-underline w-full {{ request()->is('admin/brands') ? 'bg-blue-500' : '' }}">
+                    <i class="bi bi-bookmark-fill"></i>
+                    <span class="ml-4 font-medium text-lg">Brands</span>
+                </a>
+                <a href="{{ route('admin/products') }}" class="block py-3 px-5 bg-gray-700 text-white hover:bg-blue-600 transition-colors shadow-lg no-underline w-full {{ request()->is('admin/products') ? 'bg-blue-500' : '' }}">
+                    <i class="bi bi-grid-fill"></i>
+                    <span class="ml-4 font-medium text-lg">Products</span>
+                </a>
+                <a href="{{ route('admin/profile') }}" class="block py-3 px-5 bg-gray-700 text-white hover:bg-blue-600 transition-colors shadow-lg no-underline w-full {{ request()->is('admin/profile') ? 'bg-blue-500' : '' }}">
+                    <i class="bi bi-person-fill"></i>
+                    <span class="ml-4 font-medium text-lg">Profile</span>
+                </a>
+            </nav>
         </div>
     </div>
-</body>
- 
+    <div class="flex flex-col flex-grow p-8 bg-gray-100">
+        <div>@yield('contents')</div>
+    </div>
+</div>
+
+</div>
 </html>

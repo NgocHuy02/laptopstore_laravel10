@@ -18,26 +18,34 @@
         </div>
     @endif
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <!-- Modern List View -->
+    <div class="divide-y divide-gray-200 dark:divide-gray-700">
         @foreach ($products as $product)
-            <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-                <img src="{{ $product->image }}" alt="{{ $product->name }}" class="w-full h-48 object-cover">
-                <div class="p-4">
-                    <h5 class="text-lg font-semibold">{{ \Illuminate\Support\Str::limit($product->name, 20) }}</h5>
-                    <p class="text-sm text-gray-600 overflow-ellipsis overflow-hidden h-10">{{ $product->description }}</p>
-                    <p class="text-sm text-gray-800">${{ number_format($product->price, 2) }}</p>
-                    <div class="flex justify-between items-center mt-4">
-                        <a href="{{ route('admin/products/showProductAdmin', $product->id) }}" class="text-sm bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Details</a>
-                        <a href="{{ route('admin/products/edit', $product->id) }}" class="text-sm bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Edit</a>
-                        <form action="{{ route('admin/products/destroy', $product->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this product?');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="text-sm bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Delete</button>
-                        </form>
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <img src="{{ $product->image }}" alt="{{ $product->name }}" class="w-16 h-16 object-cover rounded-full mr-4">
+                    <div>
+                        <h5 class="text-lg font-semibold">{{ \Illuminate\Support\Str::limit($product->name, 50) }}</h5>
+                        <p class="text-sm text-gray-600">{{ $product->description }}</p>
                     </div>
+                </div>
+                <div class="flex items-center">
+                    <p class="text-lg font-semibold text-gray-800 mr-4">${{ number_format($product->price, 2) }}</p>
+                    <a href="{{ route('admin/products/showProductAdmin', $product->id) }}" class="text-sm bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded mr-2">Details</a>
+                    <a href="{{ route('admin/products/edit', $product->id) }}" class="text-sm bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded mr-2">Edit</a>
+                    <form action="{{ route('admin/products/destroy', $product->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this product?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="text-sm bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Delete</button>
+                    </form>
                 </div>
             </div>
         @endforeach
+    </div>
+
+    <!-- Pagination -->
+    <div class="mt-6">
+        {{ $products->links() }}
     </div>
 </div>
 @endsection
