@@ -36,6 +36,7 @@ Route::controller(AuthController::class)->group(function () {
  
 //Normal Users Routes List
 Route::middleware(['auth', 'user-access:user'])->group(function () {
+    Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::get('/products/show/{id}', [ProductController::class, 'show'])->name('showProductDetail');
     Route::get('/profile', [UserController::class, 'userprofile'])->name('profile');
