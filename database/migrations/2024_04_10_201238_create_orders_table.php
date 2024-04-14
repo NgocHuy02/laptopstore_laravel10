@@ -16,6 +16,8 @@ return new class extends Migration
             $table->increments('id');
             $table->string('status');
             $table->dateTime('date')->default(DB::raw('CURRENT_TIMESTAMP')); // thiết lập lấy ngày giờ hiện tại của hệ thống bằng raw
+            $table->string('address')->nullable();
+            $table->string('phone')->nullable();
             $table->string('payment');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

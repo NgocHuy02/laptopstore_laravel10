@@ -11,8 +11,23 @@ class Order extends Model
 
     protected $fillable = [
         'title',
+        'status',
+        'payment',
         'price',
         'product_code',
-        'description'
+        'description',
+        'user_id',
+        'address',
+        'phone'
     ];
+
+    public function orderDetails()
+    {
+        return $this->hasMany(OrderDetail::class);
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 }

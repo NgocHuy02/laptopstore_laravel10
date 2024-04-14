@@ -1,5 +1,5 @@
 <?php
- 
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
@@ -7,6 +7,9 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,37 +20,46 @@ use App\Http\Controllers\BrandController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
- 
+
 Route::get('/', function () {
     return view('home');
 })->name('home');
- 
+
 Route::get('/about', [UserController::class, 'about'])->name('about');
- 
+
+
+
 Route::controller(AuthController::class)->group(function () {
     Route::get('register', 'register')->name('register');
     Route::post('register', 'registerSave')->name('register.save');
- 
+
     Route::get('login', 'login')->name('login');
     Route::post('login', 'loginAction')->name('login.action');
- 
+
     Route::get('logout', 'logout')->middleware('auth')->name('logout');
 });
- 
+
 //Normal Users Routes List
 Route::middleware(['auth', 'user-access:user'])->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::get('/products/show/{id}', [ProductController::class, 'show'])->name('showProductDetail');
     Route::get('/profile', [UserController::class, 'userprofile'])->name('profile');
+    Route::get('/order', [OrderController::class, 'index'])->name('order');
+    Route::get('/orders/show/{order}', [OrderController::class, 'show'])->name('show');
+    Route::get('/cart', [CartController::class, 'index'])->name('cart');
+    Route::post('/cart/add/{id}', [CartController::class, 'addToCart'])->name('addToCart');
+    Route::patch('/cart/update', [CartController::class, 'updateCart'])->name('updateCart');
+    Route::delete('/cart/remove', [CartController::class, 'removeFromCart'])->name('removeFromCart');
+    Route::post('/order/place', [OrderController::class, 'placeOrder'])->name('placeOrder');
 });
- 
+
 //Admin Routes List
 Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('/admin/home', [HomeController::class, 'adminHome'])->name('admin/home');
- 
+
     Route::get('/admin/profile', [AdminController::class, 'profilepage'])->name('admin/profile');
- 
+
     //product
     Route::get('/admin/products', [ProductController::class, 'index'])->name('admin/products');
     Route::get('/admin/products/create', [ProductController::class, 'create'])->name('admin/products/create');
