@@ -13,8 +13,8 @@ class HomeController extends Controller
  
     public function index()
     {
-        $products = Product::orderBy('id', 'DESC')->take(5)->get();
-        return view('home', compact('products'));
+
+        return view('home');
     }
  
     public function adminHome()

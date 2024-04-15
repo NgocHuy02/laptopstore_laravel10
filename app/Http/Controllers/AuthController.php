@@ -82,4 +82,22 @@ class AuthController extends Controller
     {
         return view('userprofile');
     }
+
+    public function profileSave(Request $request)
+    {
+        $user = User::user();
+
+        $user->update([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'address' => $request->input('address'),
+            'image' => $request->input('image'),
+            'mobile' => $request->input('mobile'),
+        ]);
+
+        return redirect()->back()->with('success', 'Profile updated successfully!');
+    }
+
+
+    
 }

@@ -12,6 +12,12 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    public function showProductUserPage() {
+                $products = Product::orderBy('id', 'DESC')->take(5)->get();
+        return view('products', compact('products'));
+    }
+     
     public function index()
     {
         $products = Product::paginate(3);

@@ -26,6 +26,9 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/about', [UserController::class, 'about'])->name('about');
+Route::get('/products', [ProductController::class, 'showProductUserPage'])->name('products');
+Route::get('/products/show/{id}', [ProductController::class, 'show'])->name('showProductDetail');
+
 
 
 
@@ -41,9 +44,7 @@ Route::controller(AuthController::class)->group(function () {
 
 //Normal Users Routes List
 Route::middleware(['auth', 'user-access:user'])->group(function () {
-    Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('/home', [HomeController::class, 'index'])->name('home');
-    Route::get('/products/show/{id}', [ProductController::class, 'show'])->name('showProductDetail');
     Route::get('/profile', [UserController::class, 'userprofile'])->name('profile');
     Route::get('/order', [OrderController::class, 'index'])->name('order');
     Route::get('/orders/show/{order}', [OrderController::class, 'show'])->name('show');
