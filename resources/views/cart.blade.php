@@ -6,40 +6,59 @@
 <div class="container mt-4">
     <h2>Cart</h2>
     @if(session('cart'))
-    <form id="place-order-form" action="{{ route('placeOrder') }}" method="POST" >
+    <form id="place-order-form" action="{{ route('placeOrder') }}" method="POST">
         @csrf
-        <ul class="list-group" id="cart-items">
+        <div class="row">
             @foreach(session('cart') as $id => $details)
-            <li class="list-group-item d-flex justify-content-between align-items-center" data-id="{{ $id }}">
-                <img src="{{ $details['image'] }}" width="100" height="100" class="img-responsive" />
-                <strong>{{ $details['name'] }}</strong> ${{ $details['price'] }}
-                <div>
-                    <input type="number" name="items[{{ $id }}][quantity]" value="{{ $details['quantity'] }}" min="1" class="update-cart form-control" style="width: 60px;">
+            <div class="col-md-4 mb-3">
+                <div class="card" data-id="{{ $id }}">
+                    <img src="{{ $details['image'] }}" class="card-img-top" alt="{{ $details['name'] }}" style="height: 100px; width: auto; display: block; margin: auto;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ substr($details['name'], 0, 50) }}{{ strlen($details['name']) > 50 ? '...' : '' }}</h5>
+                        <p class="card-text">${{ $details['price'] }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-outline-secondary decrease-quantity">-</button>
+                                <input type="text" class="form-control text-center quantity" value="{{ $details['quantity'] }}" style="width: 50px;">
+                                <button type="button" class="btn btn-sm btn-outline-secondary increase-quantity">+</button>
+                            </div>
+                            <button type="button" class="btn btn-sm btn-danger remove-from-cart">Remove</button>
+                        </div>
+                    </div>
                 </div>
-                <button type="button" class="btn btn-danger btn-sm remove-from-cart" data-id="{{ $id }}">Remove</button>
-            </li>
+            </div>
             @endforeach
-            <li class="list-group-item">
-                <strong>Total:</strong> ${{ array_sum(array_map(function($item) { return $item['price'] * $item['quantity']; }, session('cart'))) }}
-            </li>
-        </ul>
-        <div class="mb-3">
-            <label for="address" class="form-label">Address</label>
-            <input type="text" class="form-control" id="address" name="address" required>
         </div>
-        <div class="mb-3">
-            <label for="phone" class="form-label">Phone Number</label>
-            <input type="text" class="form-control" id="phone" name="phone" required>
+        <div class="row mt-4">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Total</h5>
+                        <p class="card-text"><strong>Total:</strong> <span id="total-price">$0.00</span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 mt-3">
+                <div class="form-group">
+                    <label for="address" class="form-label">Address</label>
+                    <input type="text" class="form-control" id="address" name="address" placeholder="1234 Main St" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone" class="form-label">Phone Number</label>
+                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="091-234-5678" >
+                </div>
+                <div class="form-group">
+                    <label for="payment" class="form-label">Payment Method</label>
+                    <select class="form-control" id="payment" name="payment">
+                        <option value="credit_card">Credit Card</option>
+                        <option value="paypal">PayPal</option>
+                        <option value="cash_on_delivery">Cash on Delivery</option>
+                    </select>
+                </div>
+                <br>
+                <button type="submit" class="btn btn-primary float-right">Place Order</button>
+            </div>
         </div>
-        <div class="mb-3">
-            <label for="payment" class="form-label">Payment Method</label>
-            <select class="form-control" id="payment" name="payment">
-                <option value="credit_card">Credit Card</option>
-                <option value="paypal">PayPal</option>
-                <option value="cash_on_delivery">Cash on Delivery</option>
-            </select>
-        </div>
-        <button type="submit" class="btn btn-primary">Place Order</button>
     </form>
     @else
     <div class="alert alert-warning">Your cart is empty</div>
@@ -48,55 +67,78 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-    $(document).ready(function() {
-        $('#place-order-form').submit(function(e) {
-            e.preventDefault();
-            var form = $(this);
-            $.ajax({
-                url: form.attr('action'),
-                method: form.attr('method'),
-                data: form.serialize(),
-                success: function(response) {
-                    alert("Order placed successfully!");
-                    window.location.reload();
-                },
-                error: function(xhr, status, error) {
-                    alert("Failed to place order. Please try again later.");
-                }
-            });
-        });
-        $('.update-cart').on('change', function() {
-            var ele = $(this);
-            $.ajax({
-                url: '{{ route("updateCart") }}',
-                method: "PATCH",
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    id: ele.parents("li").attr("data-id"),
-                    quantity: ele.val(),
-                },
-                success: function(response) {
-                    window.location.reload();
-                }
-            });
-        });
-
-        $('.remove-from-cart').click(function() {
-            var ele = $(this);
-            if (confirm("Are you sure want to remove?")) {
-                $.ajax({
-                    url: '{{ route("removeFromCart") }}',
-                    method: "DELETE",
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        id: ele.attr("data-id"),
-                    },
-                    success: function(response) {
-                        window.location.reload();
-                    }
-                });
+$(document).ready(function() {
+    function updateTotal() {
+        var total = 0;
+        $('.card').each(function() {
+            var price = parseFloat($(this).find('.card-text').text().substring(1));
+            var quantity = parseInt($(this).find('.quantity').val());
+            if (!isNaN(price) && !isNaN(quantity)) {
+                total += price * quantity;
             }
         });
+        $('#total-price').text('$' + total.toFixed(2));
+    }
+
+    // Initial total update
+    updateTotal();
+
+    // Function to handle quantity update
+    function handleQuantityUpdate(quantityInput, increment) {
+        var card = quantityInput.closest('.card');
+        var id = card.data('id');
+        var quantity = parseInt(quantityInput.val());
+        var newQuantity = quantity + increment;
+
+        if (newQuantity > 0) {
+            quantityInput.val(newQuantity);
+            updateTotal();
+            // AJAX call to update the session cart
+            $.ajax({
+                url: '{{ route("updateCart") }}',
+                method: 'PATCH',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: id,
+                    quantity: newQuantity
+                },
+                success: function(response) {
+                    console.log('Cart updated successfully');
+                },
+                error: function(err) {
+                    console.log('Error updating cart', err);
+                }
+            });
+        }
+    }
+
+    $('.increase-quantity').click(function() {
+        handleQuantityUpdate($(this).closest('.btn-group').find('.quantity'), 1);
     });
+
+    $('.decrease-quantity').click(function() {
+        handleQuantityUpdate($(this).closest('.btn-group').find('.quantity'), -1);
+    });
+
+    $('.remove-from-cart').click(function() {
+        var card = $(this).closest('.card');
+        var id = card.data('id');
+        if (confirm("Are you sure want to remove?")) {
+            $.ajax({
+                url: '{{ route("removeFromCart") }}',
+                method: "DELETE",
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: id,
+                },
+                success: function(response) {
+                    card.remove();
+                    updateTotal();
+                }
+            });
+        }
+    });
+});
 </script>
+
 @endsection
