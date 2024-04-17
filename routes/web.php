@@ -48,9 +48,10 @@ Route::controller(AuthController::class)->group(function () {
 Route::middleware(['auth', 'user-access:user'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::get('/profile', [UserController::class, 'userprofile'])->name('profile');
+    Route::put('/users/{id}/update-userprofile', [UserController::class, 'updateProfile'])->name('update-userprofile');
     Route::get('/order', [OrderController::class, 'index'])->name('order');
     Route::get('/orders/show/{order}', [OrderController::class, 'show'])->name('show');
-    Route::get('/cart', [CartController::class, 'index'])-> name('cart');
+    Route::get('/cart', [CartController::class, 'index'])->name('cart');
     Route::post('/cart/add/{id}', [CartController::class, 'addToCart'])->name('addToCart');
     Route::patch('/cart/update', [CartController::class, 'updateCart'])->name('updateCart');
     Route::delete('/cart/remove', [CartController::class, 'removeFromCart'])->name('removeFromCart');
@@ -62,6 +63,7 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('/admin/home', [HomeController::class, 'adminHome'])->name('admin/home');
 
     Route::get('/admin/profile', [AdminController::class, 'profilepage'])->name('admin/profile');
+    Route::put('/admin/{id}/update-profile', [AdminController::class, 'updateProfile'])->name('update-profile');
 
     //product
     Route::get('/admin/products', [ProductController::class, 'index'])->name('admin/products');

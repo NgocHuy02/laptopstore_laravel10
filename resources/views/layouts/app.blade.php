@@ -65,7 +65,7 @@
 
                     <div data-dropdown-items class="text-sm text-left absolute top-0 right-0 mt-16 mr-4 bg-white rounded border border-gray-400 shadow" x-show="open" @click.away="open = false">
                         <ul>
-                            <li class="px-4 py-3 border-b hover:bg-gray-200"><a href="#">My Profile</a></li>
+                            <li class="px-4 py-3 border-b hover:bg-gray-200"><a href="{{ route('admin/profile') }}">My Profile</a></li>
                             <li class="px-4 py-3 border-b hover:bg-gray-200"><a href="#">Settings</a></li>
                             <li class="px-4 py-3 hover:bg-gray-200"><a href="{{ route('logout') }}">Log out</a></li>
                         </ul>
@@ -103,10 +103,6 @@
                     <a href="{{ route('admin/orders') }}" class="block py-3 px-5 bg-gray-700 text-white hover:bg-blue-600 transition-colors shadow-lg no-underline w-full {{ request()->is('admin/orders') ? 'bg-blue-500' : '' }}">
                         <i class="bi bi-grid-fill"></i>
                         <span class="ml-4 font-medium text-lg">Orders</span>
-                    </a>
-                    <a href="{{ route('admin/profile') }}" class="block py-3 px-5 bg-gray-700 text-white hover:bg-blue-600 transition-colors shadow-lg no-underline w-full {{ request()->is('admin/profile') ? 'bg-blue-500' : '' }}">
-                        <i class="bi bi-person-fill"></i>
-                        <span class="ml-4 font-medium text-lg">Profile</span>
                     </a>
                 </nav>
             </div>

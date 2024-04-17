@@ -9,9 +9,16 @@
             Profile
         </h1>
     </div>
+    @if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+    @endif
 </header>
 <hr />
-<form method="POST" enctype="multipart/form-data" action="" class="max-w-md mx-auto bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4">
+<form method="POST" enctype="multipart/form-data" action="{{ route('update-userprofile', ['id' =>  auth()->user()->id]) }}" class="max-w-md mx-auto bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4">
+    @csrf
+    @method('PUT')
     <div class="mb-4">
         <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Name</label>
         <input name="name" type="text" id="name" value="{{ auth()->user()->name }}" placeholder="Your name" class="w-full input input-bordered rounded-md py-2 px-3 focus:outline-none focus:ring focus:border-blue-300" />
@@ -33,9 +40,9 @@
         <input name="mobile" type="text" id="mobile" value="{{ auth()->user()->mobile }}" pattern="[0-9]{10}" title="Số điện thoại phải có đúng 10 chữ số" placeholder="Your mobile number" class="w-full input input-bordered rounded-md py-2 px-3 focus:outline-none focus:ring focus:border-blue-300" />
     </div>
     <div class="flex items-center justify-end mt-4">
-    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition duration-300 ease-in-out focus:outline-none focus:ring focus:ring-blue-300">
-        Save Profile
-    </button>
-</div>
+        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition duration-300 ease-in-out focus:outline-none focus:ring focus:ring-blue-300">
+            Save Profile
+        </button>
+    </div>
 </form>
 @endsection
