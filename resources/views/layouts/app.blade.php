@@ -92,6 +92,10 @@
                         <i class="bi bi-bookmark-fill"></i>
                         <span class="ml-4 font-medium text-lg">Brands</span>
                     </a>
+                    <a href="{{ route('admin/categories') }}" class="block py-3 px-5 bg-gray-700 text-white hover:bg-blue-600 transition-colors shadow-lg no-underline w-full {{ request()->is('admin/categories') ? 'bg-blue-500' : '' }}">
+                        <i class="bi bi-bookmark-fill"></i>
+                        <span class="ml-4 font-medium text-lg">Categories</span>
+                    </a>
                     <a href="{{ route('admin/products') }}" class="block py-3 px-5 bg-gray-700 text-white hover:bg-blue-600 transition-colors shadow-lg no-underline w-full {{ request()->is('admin/products') ? 'bg-blue-500' : '' }}">
                         <i class="bi bi-grid-fill"></i>
                         <span class="ml-4 font-medium text-lg">Products</span>

@@ -54,7 +54,7 @@
                                     ${{ $order->orderDetails->sum(function($detail) { return $detail->price * $detail->quantity; }) }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <a href="{{ route('admin/orders/show_admin', $order->id) }}" class="text-indigo-600 hover:text-indigo-900">View Details</a>
+                                    <a href="{{ route('show', $order->id) }}" class="text-indigo-600 hover:text-indigo-900">View Details</a>
                                 </td>
                             </tr>
                             @endforeach

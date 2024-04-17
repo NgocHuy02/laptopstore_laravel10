@@ -9,6 +9,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\CategoryController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -48,7 +50,7 @@ Route::middleware(['auth', 'user-access:user'])->group(function () {
     Route::get('/profile', [UserController::class, 'userprofile'])->name('profile');
     Route::get('/order', [OrderController::class, 'index'])->name('order');
     Route::get('/orders/show/{order}', [OrderController::class, 'show'])->name('show');
-    Route::get('/cart', [CartController::class, 'index'])->name('cart');
+    Route::get('/cart', [CartController::class, 'index'])-> name('cart');
     Route::post('/cart/add/{id}', [CartController::class, 'addToCart'])->name('addToCart');
     Route::patch('/cart/update', [CartController::class, 'updateCart'])->name('updateCart');
     Route::delete('/cart/remove', [CartController::class, 'removeFromCart'])->name('removeFromCart');
@@ -81,4 +83,12 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     //order
     Route::get('/admin/orders', [OrderController::class, 'index_admin'])->name('admin/orders');
     Route::get('/admin/orders/show_admin/{order}', [OrderController::class, 'show_admin'])->name('admin/orders/show_admin');
+    //category
+    Route::get('/admin/categories', [CategoryController::class, 'index'])->name('admin/categories');
+    Route::get('/admin/categories/create', [CategoryController::class, 'create'])->name('admin/categories/create');
+    Route::post('/admin/categories/store', [CategoryController::class, 'store'])->name('admin/categories/store');
+    Route::get('/admin/categories/show/{id}', [CategoryController::class, 'show'])->name('admin/categories/show');
+    Route::get('/admin/categories/edit/{id}', [CategoryController::class, 'edit'])->name('admin/categories/edit');
+    Route::put('/admin/categories/edit/{id}', [CategoryController::class, 'update'])->name('admin/categories/update');
+    Route::delete('/admin/categories/destroy/{id}', [CategoryController::class, 'destroy'])->name('admin/categories/destroy');
 });

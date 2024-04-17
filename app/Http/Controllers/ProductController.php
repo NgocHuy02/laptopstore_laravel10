@@ -14,7 +14,7 @@ class ProductController extends Controller
      */
 
     public function showProductUserPage() {
-                $products = Product::orderBy('id', 'DESC')->take(5)->get();
+                $products = Product::orderBy('id', 'DESC')->get();
         return view('products', compact('products'));
     }
      
