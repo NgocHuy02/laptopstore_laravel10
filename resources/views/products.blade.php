@@ -9,6 +9,11 @@
             <strong>PRODUCTS US</strong>
         </h1>
     </div>
+    @if (session('success'))
+    <script>
+        alert(('Product added to cart successfully!'));
+    </script>
+    @endif
 </header>
 <hr />
 <main>
@@ -42,5 +47,6 @@
         alert('Product added to cart successfully!');
     }
 </script> -->
+
 
 @endsection

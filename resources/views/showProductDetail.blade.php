@@ -28,9 +28,9 @@
         </div>
     </div>
 </div>
+@if (session('success'))
 <script>
-    function addToCartSuccess() {
-        alert('Product added to cart successfully!');
-    }
+    alert(('Product added to cart successfully!'));
 </script>
+@endif
 @endsection

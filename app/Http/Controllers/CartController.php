@@ -17,7 +17,6 @@ class CartController extends Controller
 
         $cart = session()->get('cart', []);
 
-        // if cart is empty then this is the first product
         if (!isset($cart[$id])) {
             $cart[$id] = [
                 "name" => $product->name,
@@ -26,7 +25,6 @@ class CartController extends Controller
                 "image" => $product->image
             ];
         } else {
-            // if cart not empty then check if this product exist then increment quantity
             $cart[$id]['quantity']++;
         }
 
@@ -38,28 +36,6 @@ class CartController extends Controller
     {
         return view('cart', ['cartItems' => session('cart')]);
     }
-
-    // public function removeFromCart($id)
-    // {
-    //     $cart = session()->get('cart', []);
-
-    //     if (isset($cart[$id])) {
-    //         unset($cart[$id]);
-    //         session()->put('cart', $cart);
-    //     }
-
-    //     return redirect()->back()->with('success', 'Product removed successfully');
-    // }
-
-    // public function updateCart(Request $request, $id)
-    // {
-    //     $cart = session()->get('cart');
-    //     if (isset($cart[$id])) {
-    //         $cart[$id]['quantity'] = $request->quantity;
-    //         session()->put('cart', $cart);
-    //     }
-    //     return redirect()->back()->with('success', 'Cart updated.');
-    // }
 
     public function updateCart(Request $request)
     {
