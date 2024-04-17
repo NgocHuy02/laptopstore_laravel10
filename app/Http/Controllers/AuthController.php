@@ -24,6 +24,16 @@ class AuthController extends Controller
  
     public function registerSave(Request $request)
     {
+
+        $validator = Validator::make($request->all(), [
+            'password' => ['required', 'string', 'min:6', 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/']
+        ], [
+            'password.regex' => 'Please use a password with 6 characters, uppercase, lowercase, and special characters'
+        ]);
+    
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
         Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|email',
