@@ -60,12 +60,26 @@ class OrderController extends Controller
 
     public function index()
     {
-        $orders = Order::with('orderDetails')->orderBy('id', 'DESC')->get();
+        $orders = Order::where('user_id', auth()->id())
+            ->with('orderDetails')
+            ->paginate(4);
 
         return view('orders.index', compact('orders'));
     }
+
+
     public function show(Order $order)
     {
         return view('orders.show', compact('order'));
+    }
+    public function index_admin()
+    {
+        $orders = Order::with('orderDetails')->paginate(4);
+
+        return view('orders.index_admin', compact('orders'));
+    }
+    public function show_admin(Order $order)
+    {
+        return view('orders.show_admin', compact('order'));
     }
 }

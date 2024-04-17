@@ -6,18 +6,16 @@
 <div class="container mt-4">
     <h2>Cart</h2>
     @if(session('cart'))
-    <form action="{{ route('placeOrder') }}" method="POST">
+    <form id="place-order-form" action="{{ route('placeOrder') }}" method="POST" >
         @csrf
         <ul class="list-group" id="cart-items">
             @foreach(session('cart') as $id => $details)
             <li class="list-group-item d-flex justify-content-between align-items-center" data-id="{{ $id }}">
                 <img src="{{ $details['image'] }}" width="100" height="100" class="img-responsive" />
                 <strong>{{ $details['name'] }}</strong> ${{ $details['price'] }}
-                <!-- Quantity Form -->
                 <div>
                     <input type="number" name="items[{{ $id }}][quantity]" value="{{ $details['quantity'] }}" min="1" class="update-cart form-control" style="width: 60px;">
                 </div>
-                <!-- Remove Button -->
                 <button type="button" class="btn btn-danger btn-sm remove-from-cart" data-id="{{ $id }}">Remove</button>
             </li>
             @endforeach
@@ -51,6 +49,22 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     $(document).ready(function() {
+        $('#place-order-form').submit(function(e) {
+            e.preventDefault();
+            var form = $(this);
+            $.ajax({
+                url: form.attr('action'),
+                method: form.attr('method'),
+                data: form.serialize(),
+                success: function(response) {
+                    alert("Order placed successfully!");
+                    window.location.reload();
+                },
+                error: function(xhr, status, error) {
+                    alert("Failed to place order. Please try again later.");
+                }
+            });
+        });
         $('.update-cart').on('change', function() {
             var ele = $(this);
             $.ajax({
@@ -78,7 +92,7 @@
                         id: ele.attr("data-id"),
                     },
                     success: function(response) {
-                        window.location.reload(); // Or update the DOM to remove the item
+                        window.location.reload();
                     }
                 });
             }

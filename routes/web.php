@@ -78,4 +78,7 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('/admin/brands/edit/{id}', [BrandController::class, 'edit'])->name('admin/brands/edit');
     Route::put('/admin/brands/edit/{id}', [BrandController::class, 'update'])->name('admin/brands/update');
     Route::delete('/admin/brands/destroy/{id}', [BrandController::class, 'destroy'])->name('admin/brands/destroy');
+    //order
+    Route::get('/admin/orders', [OrderController::class, 'index_admin'])->name('admin/orders');
+    Route::get('/admin/orders/show_admin/{order}', [OrderController::class, 'show_admin'])->name('admin/orders/show_admin');
 });

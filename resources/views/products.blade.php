@@ -25,7 +25,7 @@
                         <p class="text-muted">${{ number_format($product->price, 2) }}</p>
                         <div class="mt-auto">
                             <a href="{{ route('showProductDetail', $product->id) }}" class="btn btn-primary">View Product</a>
-                            <a href="javascript:void(0)" onclick="document.getElementById('add-to-cart-form-{{ $product->id }}').submit();" class="btn btn-success">Add To Cart</a>
+                            <a href="javascript:void(0)" onclick="document.getElementById('add-to-cart-form-{{ $product->id }}').submit(); addToCartSuccess();" class="btn btn-success">Add To Cart</a>
                             <form id="add-to-cart-form-{{ $product->id }}" action="{{ route('addToCart', $product->id) }}" method="POST" style="display:none;">
                                 @csrf
                             </form>
@@ -37,6 +37,10 @@
         </div>
     </div>
 </main>
-
+<script>
+    function addToCartSuccess() {
+        alert('Product added to cart successfully!');
+    }
+</script>
 
 @endsection
