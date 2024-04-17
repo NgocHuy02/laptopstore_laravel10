@@ -28,9 +28,15 @@
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @if (session('success'))
 <script>
-    alert(('Product added to cart successfully!'));
+    Swal.fire({
+        title: 'Success!',
+        text: 'Product added to cart successfully!',
+        icon: 'success',
+        confirmButtonText: 'Ok'
+    });
 </script>
 @endif
 @endsection
